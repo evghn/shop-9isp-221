@@ -41,8 +41,9 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['price'], 'default', 'value' => 0],
+            [['like', 'dislike'], 'default', 'value' => 0],
             [['title', 'category_id'], 'required'],
-            [['amount', 'category_id'], 'integer'],
+            [['amount', 'category_id', 'like', 'dislike'], 'integer'],
             [['price'], 'number'],
             [['description'], 'string'],
             [['title'], 'string', 'max' => 255],
@@ -107,6 +108,17 @@ class Product extends \yii\db\ActiveRecord
     public function getFavourites()
     {
         return $this->hasMany(Favourite::class, ['product_id' => 'id']);
+    }
+
+
+    /**
+     * Gets query for [[UserReactions]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserReactions()
+    {
+        return $this->hasMany(UserReaction::class, ['product_id' => 'id']);
     }
 
 

@@ -97,6 +97,18 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
 
+    /**
+     * Gets query for [[UserReactions]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserReactions()
+    {
+        return $this->hasMany(UserReaction::class, ['user_id' => 'id']);
+    }
+
+
+
     public static function findIdentity($id)
     {
         return static::findOne($id);

@@ -19,7 +19,20 @@ use yii\bootstrap5\Html;
 
         </div>
         <div class="d-flex justify-content-between">
-            <div></div>
+            <div>
+                <?= Html::a(
+                    "👍🏻" . "<span> $model->like</span>",
+                    ["/account/favourite/like-change", "product_id" => $model->id, "reaction" => 1],
+                    ['class' => "text-decoration-none btn-like"]
+                )
+                ?>
+                <?= Html::a(
+                    "👎🏻" . "<span> $model->dislike</span>",
+                    ["/account/favourite/like-change", "product_id" => $model->id, "reaction" => 0],
+                    ['class' => "text-decoration-none btn-dislike"]
+                )
+                ?>
+            </div>
             <div>
                 <?= Yii::$app->user?->identity?->isClient
                     ? Html::a(

@@ -3,12 +3,15 @@
 namespace app\modules\account\controllers;
 
 use app\models\Favourite;
+use app\models\Product;
+use app\models\UserReaction;
 use app\modules\account\models\FavouriteSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 
 /**
  * FavouriteController implements the CRUD actions for Favourite model.
@@ -49,24 +52,9 @@ class FavouriteController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Favourite model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
 
-    /**
-     * Creates a new Favourite model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
+
+
     public function actionChange($product_id)
     {
         if ($this->request->isPost) {
@@ -91,40 +79,57 @@ class FavouriteController extends Controller
         return $this->asJson(false);
     }
 
-    /**
-     * Updates an existing Favourite model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+
+    public function actionLikeChange($product_id, $reaction)
+    {
+        if ($this->request->isPost) {
+            $model = UserReaction::findOne(["product_id" => $product_id, "user_id" => Yii::$app->user->id]);
+
+            if (!$model) {
+                $model = new UserReaction();
+                $model->product_id = $product_id;
+                $model->user_id = Yii::$app->user->id;
+            }
+
+            if ($model) {
+                if ($product = Product::findOne($product_id)) {
+                    // VarDumper::dump($product->id, 10, true);
+                    // VarDumper::dump($model->attributes, 10, true);
+                    // VarDumper::dump($reaction, 10, true);
+                    // die;
+
+
+                    if ($model->status !== null && $model->status == $reaction) {
+                        if ($reaction) {
+                            $product->like--;
+                        } else {
+                            $product->dislike--;
+                        }
+                        $product->save();
+                    } elseif ($model->status === null) {
+                        if ($reaction) {
+                            $product->like++;
+                        } else {
+                            $product->dislike++;
+                        }
+                        $product->save();
+                    }
+                }
+                if ($model->status !== null && $model->status == $reaction) {
+                    $model->status = null;
+                    if ($model->save()) {
+                        return $this->asJson(true);
+                    }
+                } elseif ($model->status === null) {
+                    $model->status = $reaction;
+                    if ($model->save()) {
+                        return $this->asJson(true);
+                    }
+                }
+            }
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-
-    /**
-     * Finds the Favourite model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Favourite the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Favourite::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
+        return $this->asJson(false);
     }
 }
