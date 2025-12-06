@@ -4,11 +4,13 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
+use app\models\Cart;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\widgets\Pjax;
 
 AppAsset::register($this);
 
@@ -68,6 +70,19 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     . '</li>'
             ]
         ]);
+        ?>
+        <div class="text-white flex-grow-1 justify-content-end text-end">
+            <div class="d-flex gap-2 flex-grow-1 justify-content-end text-end">
+                <?= Html::a(
+                    "🛒 <span id='cart-count'>" . Cart::getCount() . "</span>",
+                    ["/account/cart"],
+                    ['class' => "text-secondary text-decoration-none"]
+                )
+                ?>
+
+            </div>
+        </div>
+        <?php
         NavBar::end();
         ?>
     </header>

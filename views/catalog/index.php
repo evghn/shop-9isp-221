@@ -45,3 +45,4 @@ $this->title = 'Каталог товаров';
 </div>
 <?php
 $this->registerJsFile("/js/catalog.js", ["depends" => JqueryAsset::class]);
+$this->registerJsFile("/js/cart.js", ["depends" => JqueryAsset::class]);
