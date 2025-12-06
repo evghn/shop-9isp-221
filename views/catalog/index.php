@@ -5,6 +5,7 @@ use yii\bootstrap5\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
+use yii\web\JqueryAsset;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 
@@ -20,7 +21,11 @@ $this->title = 'Каталог товаров';
     <h3><?= Html::encode($this->title) ?></h3>
 
 
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin([
+        "id" => "catalog-pjax",
+        "enablePushState" => false,
+        "timeout" => 5000,
+    ]); ?>
     <?php # $this->render('_search', ['model' => $searchModel]); 
     ?>
 
@@ -38,3 +43,5 @@ $this->title = 'Каталог товаров';
     <?php Pjax::end(); ?>
 
 </div>
+<?php
+$this->registerJsFile("/js/catalog.js", ["depends" => JqueryAsset::class]);

@@ -98,6 +98,18 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasMany(OrderItem::class, ['product_id' => 'id']);
     }
 
+
+    /**
+     * Gets query for [[Favourites]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavourites()
+    {
+        return $this->hasMany(Favourite::class, ['product_id' => 'id']);
+    }
+
+
     /**
      * Gets query for [[ProductImages]].
      *
