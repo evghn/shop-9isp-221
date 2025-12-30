@@ -33,7 +33,15 @@ $config = [
             'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@app/mail',
             // send all mails to a file by default.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTrasport',
+                'scheme' => 'smtps',
+                'host' => 'smpt.mail.ru',
+                'username' => 'iv2-22-web@mail.ru',
+                'password' => 'khxGl62GAbFo05UcpU3z',
+                'port' => 465,
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -53,10 +61,29 @@ $config = [
         ],
 
     ],
+    'controllerMap' => [
+        'elfinder' => [
+            'class' => 'mihaildev\elfinder\PathController',
+            'access' => ['@'],
+            'root' => [
+                'baseUrl' => '@web',
+                'basePath' => '@webroot',
+                'path' => 'img',
+                'name' => 'image',
+                'plugin' => [
+                    'Sluggable' => [
+                        'lowercase' => false,
+                    ]
+                ]
+            ],
+
+        ]
+    ],
 
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
+            "defaultRoute" => "order"
         ],
 
         'account' => [

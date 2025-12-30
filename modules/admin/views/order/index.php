@@ -8,20 +8,20 @@ use yii\widgets\ListView;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var app\modules\account\models\AccountSearch $searchModel */
+/** @var app\modules\admin\models\OrderSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = '';
+$this->title = 'Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-index">
 
-    <h3><?= Html::encode($this->title) ?></h3>
+    <h3>Панель администратора</h3>
+    <div class="mt-5">
+        <?= Html::a("Управление категориями", ['/admin/category'], ['class' => "btn btn-outline-primary"]) ?>
+        <?= Html::a("Управление товарами", ['/admin/product'], ['class' => "btn btn-outline-success"]) ?>
 
-    <p>
-        <?= Html::a('Любимые товары', ['/account/favourite'], ['class' => 'btn btn-outline-success']) ?>
-        <?= Html::a('Отправить email', ['send-mail'], ['class' => 'btn btn-outline-primary']) ?>
-    </p>
+    </div>
 
     <?php Pjax::begin(); ?>
     <div class="d-flex  align-items-baseline flex-wrap gap-3 justify-content-between">

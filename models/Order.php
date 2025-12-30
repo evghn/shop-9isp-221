@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "order".
@@ -56,12 +57,12 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'amount' => 'Amount',
-            'total' => 'Total',
+            'amount' => 'Количество товара',
+            'total' => 'Общая стоимость (₽)',
             'user_id' => 'User ID',
-            'created_at' => 'Created At',
-            'status_id' => 'Status ID',
-            'pay_type_id' => 'Pay Type ID',
+            'created_at' => 'Дата время заказа',
+            'status_id' => 'Статус заказа',
+            'pay_type_id' => 'Тип оплаты',
         ];
     }
 
@@ -105,4 +106,23 @@ class Order extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
+
+    public static function sendMail($params)
+    {
+        $order = Order::findOne($params['order_id']);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => OrderItem::find()
+                ->with(["product"])
+                ->filterWhere(["order_id" => $params['order_id']]),
+        ]);
+
+        Yii::$app->mailer->htmlLayout = $params['layout']; //"@app/mail/layouts/html";
+        return Yii::$app->mailer
+            ->compose($params['letter'], ['model' => $order, 'dataProvider' => $dataProvider])
+            ->setFrom("iv2-22-web@mail.ru")
+            ->setTo($order->user->email)
+            ->setSubject($params['subject'])
+            ->send();
+    }
 }

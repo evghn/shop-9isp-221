@@ -30,11 +30,11 @@ class CartController extends Controller
             'query' => CartItem::find()
                 ->with(["product"])
                 ->filterWhere(["cart_id" => $cart?->id ?? 0]),
-            /*
             'pagination' => [
-                'pageSize' => 50
+                'pageSize' => 3
             ],
-            'sort' => [
+            /*
+                'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
                 ]

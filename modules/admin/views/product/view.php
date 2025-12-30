@@ -39,7 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 "value" => $model->category->title,
 
             ],
-            'description:ntext',
+            [
+                "attribute" => 'description',
+                "format" => "html",
+            ],
             [
                 "label" => "Изображение товара",
                 "format" => "html",

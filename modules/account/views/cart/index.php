@@ -41,6 +41,9 @@ $this->title = 'Состав корзины';
                 "class" => LinkPager::class,
             ]
         ]) ?>
+        <div class="mt-3 justify-content-end d-flex">
+            <?= Html::a("Создать заказ", ["/account/account-order/create"], ["class" => "btn btn-outline-primary"]) ?>
+        </div>
     <?php else: ?>
         <div class="alert alert-primary" role="alert">
             Товары в корзине отсуствуют!

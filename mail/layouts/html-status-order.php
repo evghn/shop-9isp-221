@@ -16,19 +16,6 @@ use yii\helpers\Html;
     <meta http-equiv="Content-Type" content="text/html; charset=<?= Yii::$app->charset ?>" />
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <style>
-        table,
-        td,
-        th {
-            border: 1px solid #dddbdbff;
-            border-collapse: collapse;
-        }
-
-        td,
-        th {
-            padding: 7px;
-        }
-    </style>
 </head>
 
 <body>

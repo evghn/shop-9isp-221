@@ -56,4 +56,19 @@ class PayType extends \yii\db\ActiveRecord
         return $this->hasMany(Order::class, ['pay_type_id' => 'id']);
     }
 
+
+    public static function getPayTypes()
+    {
+        return static::find()
+            ->select('title')
+            ->indexBy('id')
+            ->column()
+        ;
+    }
+
+
+    public static function getPayType($id)
+    {
+        return static::findOne($id)->title;
+    }
 }

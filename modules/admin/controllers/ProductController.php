@@ -70,7 +70,7 @@ class ProductController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Product(["scenarion" => Product::SCENARIO_CREATE]);
+        $model = new Product(["scenario" => Product::SCENARIO_CREATE]);
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {

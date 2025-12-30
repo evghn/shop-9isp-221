@@ -2,11 +2,18 @@
 
 namespace app\modules\account\controllers;
 
+use app\models\Cart;
+use app\models\CartItem;
 use app\models\Order;
+use app\models\OrderItem;
+use app\models\Status;
 use app\modules\account\models\AccountSearch;
+use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 
 /**
  * AccountController implements the CRUD actions for Order model.
@@ -55,9 +62,23 @@ class AccountOrderController extends Controller
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+            'query' => OrderItem::find()
+                ->with(["product"])
+                ->filterWhere(["order_id" => $id]),
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            "dataProvider" => $dataProvider
         ]);
+    }
+
+    public function actionSendMail()
+    {
+        if (Order::sendMail(7)) {
+            Yii::$app->session->setFlash("success", "Письмо успешно отправлено");
+            return $this->actionIndex();
+        }
     }
 
     /**
@@ -68,39 +89,48 @@ class AccountOrderController extends Controller
     public function actionCreate()
     {
         $model = new Order();
+        $cart = Cart::findOne(["user_id" => Yii::$app->user->id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => CartItem::find()
+                ->with(["product"])
+                ->filterWhere(["cart_id" => $cart?->id ?? 0]),
+            'pagination' => [
+                'pageSize' => 3
+            ],
+        ]);
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+
+            if ($model->load($this->request->post())) {
+                $model->status_id = Status::getStatusId("new");
+                $model->load($cart->attributes, "");
+
+                if ($model->save()) {
+                    $cart_item = CartItem::find()
+                        ->where(["cart_id" => $cart->id])
+                        ->asArray()
+                        ->all();
+                    foreach ($cart_item as $item) {
+                        $orderItem = new OrderItem();
+                        $orderItem->order_id = $model->id;
+                        $orderItem->load($item, "");
+                        $orderItem->save();
+                    }
+                    Yii::$app->session->setFlash("success", "Ваш заказ успешно создан");
+
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
+            'cart' => $cart,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
-    /**
-     * Updates an existing Order model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Deletes an existing Order model.

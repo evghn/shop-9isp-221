@@ -31,7 +31,7 @@ class Status extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['title'], 'string', 'max' => 255],
+            [['title', "alias"], 'string', 'max' => 255],
         ];
     }
 
@@ -56,4 +56,29 @@ class Status extends \yii\db\ActiveRecord
         return $this->hasMany(Order::class, ['status_id' => 'id']);
     }
 
+
+    public static function getStatusId($alias)
+    {
+        return static::findOne(['alias' => $alias])->id;
+    }
+
+
+    public static function getStatus($id)
+    {
+        return static::findOne($id)->title;
+    }
+
+    public static function getStatusAlias($id)
+    {
+        return static::findOne($id)->alias;
+    }
+
+    public static function getStatuses()
+    {
+        return static::find()
+            ->select('title')
+            ->indexBy('id')
+            ->column()
+        ;
+    }
 }
