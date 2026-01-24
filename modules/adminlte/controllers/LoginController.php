@@ -12,7 +12,7 @@ use yii\web\Controller;
  */
 class LoginController extends Controller
 {
-    public $layout = "login";
+    // public $layout = "login";
 
     /**
      * Renders the index view for the module
@@ -20,6 +20,8 @@ class LoginController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = "login";
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }

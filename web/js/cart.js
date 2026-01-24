@@ -35,7 +35,7 @@ $(() => {
 
   $("#cart-pjax").on(
     "click",
-    ".btn-cart-item_action, .btn-cart-item-remove",
+    ".btn-cart-item_action, .btn-cart-item-remove, .btn-cart-clear",
     function (e) {
       e.preventDefault();
       if ($send_request) {
@@ -53,7 +53,7 @@ $(() => {
           $send_request = false;
         },
       });
-    }
+    },
   );
 
   $("#cart-pjax").on("pjax:end", function () {

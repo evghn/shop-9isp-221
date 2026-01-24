@@ -19,8 +19,14 @@ switch (Status::getStatusAlias($model->status_id)) {
     case "cancel":
         $color_status = "bg-warning-subtle";
         break;
+
+    case "in-working":
+        $color_status = "bg-info-subtle";
+        break;
 }
 
+// var_dump($model->status_id, Status::getStatusAlias($model->status_id), $color_status);
+// die;
 
 
 ?>

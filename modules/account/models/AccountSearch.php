@@ -5,6 +5,7 @@ namespace app\modules\account\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Order;
+use Yii;
 
 /**
  * AccountSearch represents the model behind the search form of `app\models\Order`.
@@ -63,7 +64,7 @@ class AccountSearch extends Order
             'id' => $this->id,
             'amount' => $this->amount,
             'total' => $this->total,
-            'user_id' => $this->user_id,
+            'user_id' => Yii::$app->user->id,
             'created_at' => $this->created_at,
             'status_id' => $this->status_id,
             'pay_type_id' => $this->pay_type_id,

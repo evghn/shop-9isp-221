@@ -140,6 +140,10 @@ class SiteController extends Controller
                 $model->password = Yii::$app->security->generatePasswordHash($model->password);
 
                 if ($model->save()) {
+                    $auth = Yii::$app->authManager;
+                    $clentRole = $auth->getRole('client');
+                    $auth->assign($clentRole, $model->id);
+
                     Yii::$app->session->setFlash('success', "Вы успешно зарегистрировались в системе");
                     Yii::$app->user->login($model);
                     return $this->redirect('/');

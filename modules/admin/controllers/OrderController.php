@@ -63,6 +63,15 @@ class OrderController extends Controller
         ]);
     }
 
+    public function actionDelete($id)
+    {
+        if ($model = Order::findOne($id)) {
+            $model->delete();
+        }
+
+        return $this->redirect('/admin');
+    }
+
 
     public function actionChangeStatus($id, $status)
     {

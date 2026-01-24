@@ -82,4 +82,10 @@ class Cart extends \yii\db\ActiveRecord
             ? $cart->amount
             : 0;
     }
+
+    public static function clear()
+    {
+        $cart = static::findOne(["user_id" => Yii::$app->user->id]);
+        return $cart->delete();
+    }
 }

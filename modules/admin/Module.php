@@ -24,8 +24,8 @@ class Module extends \yii\base\Module
                     // разрешаем аутентифицированным пользователям
                     [
                         'allow' => true,
-                        'roles' => ['@'],
-                        "matchCallback" => fn() => Yii::$app->user->identity->isAdmin
+                        'roles' => ['admin'],
+                        // "matchCallback" => fn() => Yii::$app->user->identity->isAdmin
                     ],
                     // всё остальное по умолчанию запрещено
                 ],

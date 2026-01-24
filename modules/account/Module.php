@@ -25,8 +25,8 @@ class Module extends \yii\base\Module
                     // разрешаем аутентифицированным пользователям
                     [
                         'allow' => true,
-                        'roles' => ['@'],
-                        "matchCallback" => fn() => Yii::$app->user->identity->isClient
+                        'roles' => ['client'],
+                        // "matchCallback" => fn() => Yii::$app->user->identity->isClient
                     ],
                     // всё остальное по умолчанию запрещено
                 ],

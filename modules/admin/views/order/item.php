@@ -62,9 +62,16 @@ switch (Status::getStatusAlias($model->status_id)) {
                 : ''
             ?>
             <?= $model->status_id === Status::getStatusId('new')
+                ? Html::a('Удалить заказ', ['delete', 'id' => $model->id, 'status' => 'delete'], ['class' => 'btn btn-outline-danger', 'data-method' => 'post', 'data-pjax' => 0])
+                : ''
+            ?>
+            <?= $model->status_id === Status::getStatusId('new')
                 ? Html::a('Принять в работу', ['change-status', 'id' => $model->id, 'status' => 'in-working'], ['class' => 'btn btn-outline-primary', 'data-method' => 'post', 'data-pjax' => 0])
                 : ''
             ?>
+
+
+
             <?= Html::a('Просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-info']) ?>
 
         </div>

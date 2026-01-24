@@ -34,7 +34,7 @@ use yii\bootstrap5\Html;
                 ?>
             </div>
             <div>
-                <?= Yii::$app->user?->identity?->isClient
+                <?= Yii::$app->user->can("canClient")
                     ? Html::a(
                         !empty($model?->favourites[0]->status)
                             ? "💗"
@@ -47,7 +47,7 @@ use yii\bootstrap5\Html;
             </div>
         </div>
 
-        <?= !Yii::$app->user->isGuest && Yii::$app->user->identity->isClient
+        <?= Yii::$app->user->can("canClient")
             ? Html::a("В корзину", ["/account/cart/add", "product_id" => $model->id], ['class' => "btn btn-outline-primary w-100  fs-5 py-2 mt-3 btn-add-cart"])
             : ""
         ?>

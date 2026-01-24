@@ -28,7 +28,7 @@ class Module extends \yii\base\Module
                         'allow' => true,
                         'roles' => ['?'],
                         "controllers" => ['admin-lte/login'],
-                        'actions' => ["index"]
+                        // 'actions' => ["admin-lte/login/index"]
                     ],
                     // разрешаем аутентифицированным пользователям
                     [

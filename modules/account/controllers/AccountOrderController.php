@@ -117,6 +117,8 @@ class AccountOrderController extends Controller
                         $orderItem->save();
                     }
                     Yii::$app->session->setFlash("success", "Ваш заказ успешно создан");
+                    Cart::clear();
+
 
                     return $this->redirect(['view', 'id' => $model->id]);
                 }

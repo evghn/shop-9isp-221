@@ -1,8 +1,9 @@
 <?php
 
 use app\models\Cart;
+use yii\bootstrap5\Html;
 use yii\bootstrap5\LinkPager;
-use yii\helpers\Html;
+
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\web\JqueryAsset;
@@ -26,9 +27,14 @@ $this->title = 'Состав корзины';
     ]); ?>
 
     <?php if ($dataProvider->totalCount): ?>
+        <div class="d-flex justify-content-between">
+            <div class="fs-3 mb-2">
+                Общее количество товаров в корзине: <?= $cart->amount ?> на сумму: <?= $cart->total ?><span class="fw-normal fs-5 ">&#8381;</span>
+            </div>
+            <div>
+                <?= Html::a('Очистить', ['/account/cart/clear'], ['class' => "btn btn-outline-danger btn-cart-clear", "data-pjax" => 0])  ?>
+            </div>
 
-        <div class="fs-3 mb-2">
-            Общее количество товаров в корзине: <?= $cart->amount ?> на сумму: <?= $cart->total ?><span class="fw-normal fs-5 ">&#8381;</span>
         </div>
 
         <?= ListView::widget([

@@ -117,6 +117,20 @@ class CartController extends Controller
         return $this->asJson(false);
     }
 
+
+    public function actionClear()
+    {
+        if ($this->request->isPost) {
+
+            return $this->asJson(Cart::clear());
+        }
+
+        return $this->asJson(false);
+    }
+
+
+
+
     public function actionChangeItem($item_id, $action = "")
     {
         $cart_item = CartItem::findOne($item_id);
