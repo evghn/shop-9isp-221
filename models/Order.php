@@ -125,4 +125,9 @@ class Order extends \yii\db\ActiveRecord
             ->setSubject($params['subject'])
             ->send();
     }
+
+    public static function totalOrders()
+    {
+        return static::find()->count();
+    }
 }

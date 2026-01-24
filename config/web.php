@@ -90,6 +90,10 @@ $config = [
             'class' => 'app\modules\account\Module',
             "defaultRoute" => "account-order"
         ],
+
+        'admin-lte' => [
+            'class' => 'app\modules\adminlte\Module',
+        ],
     ],
     'params' => $params,
 ];

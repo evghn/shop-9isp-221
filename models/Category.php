@@ -65,4 +65,9 @@ class Category extends \yii\db\ActiveRecord
             ->orderBy("title")
             ->column();
     }
+
+    public static function totalCategories()
+    {
+        return static::find()->count();
+    }
 }

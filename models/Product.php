@@ -149,4 +149,9 @@ class Product extends \yii\db\ActiveRecord
             return false;
         }
     }
+
+    public static function totalProducts()
+    {
+        return static::find()->count();
+    }
 }

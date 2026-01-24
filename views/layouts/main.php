@@ -53,6 +53,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     ? ['label' => 'Панель администратора', 'url' => ['/admin']]
                     : "",
 
+                !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
+                    ? ['label' => 'Панель администратора LTE', 'url' => ['/admin-lte']]
+                    : "",
+
                 !Yii::$app->user->isGuest && Yii::$app->user->identity->isClient
                     ? ['label' => 'Личный кабинет', 'url' => ['/account']]
                     : "",
